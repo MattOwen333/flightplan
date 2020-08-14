@@ -57,6 +57,36 @@ async function getUserByUsername(username) {
   }
 }
 
+async function getUserById(userId) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      SELECT *
+      FROM users
+      WHERE id=$1
+    `,
+      [userId]
+    );
+    if (!user) {
+      return null;
+    }
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function deleteUser(userId) {
+  await client.query(
+    `
+      DELETE FROM users
+      WHERE id=${userId}
+      RETURNING *`
+  );
+}
+
 async function createGroup({ name, time, location }) {
   try {
     const rows = await client.query(
@@ -115,5 +145,7 @@ module.exports = {
   getAllGroups,
   addComment,
   getUserByUsername,
+  getUserById,
+  deleteUser,
   // db methods
 };

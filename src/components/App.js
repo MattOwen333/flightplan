@@ -1,28 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import {
-  getSomething
-} from '../api';
+  Link,
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
+import { getSomething } from "../api";
 
 const App = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     getSomething()
-      .then(response => {
+      .then((response) => {
         setMessage(response.message);
       })
-      .catch(error => {
+      .catch((error) => {
         setMessage(error.message);
       });
   });
 
   return (
     <div className="App">
-      <h1>Hello, World!</h1>
-      <h2>{ message }</h2>
+      <Router>
+        <Header />
+      </Router>
     </div>
   );
-}
+};
 
 export default App;
