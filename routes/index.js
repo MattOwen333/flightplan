@@ -41,6 +41,9 @@ apiRouter.use((req, res, next) => {
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
+const groupsRouter = require("./groups");
+apiRouter.use("/groups", groupsRouter);
+
 apiRouter.use((error, req, res, next) => {
   res.send(error);
 });

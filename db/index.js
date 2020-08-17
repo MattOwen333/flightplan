@@ -78,6 +78,23 @@ async function getUserById(userId) {
   }
 }
 
+async function getGroupById(id) {
+  try {
+    const {
+      rows: [group],
+    } = await client.query(
+      `
+      SELECT * FROM group
+      WHERE id = $1
+    `,
+      [id]
+    );
+    return group;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function deleteUser(userId) {
   await client.query(
     `
@@ -147,5 +164,7 @@ module.exports = {
   getUserByUsername,
   getUserById,
   deleteUser,
+  getGroupById,
+  addComment,
   // db methods
 };
