@@ -23,7 +23,7 @@ export async function login({ username, password }) {
   }
 }
 
-export async function register({ username, password, name, email, location }) {
+export async function register({ username, password }) {
   try {
     const data = await axios.post("api/users/register", {
       username,
@@ -31,6 +31,19 @@ export async function register({ username, password, name, email, location }) {
       name,
       email,
       location,
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteUser({ username, password }) {
+  try {
+    const data = await axios.delete("api/users/delete", {
+      username,
+      password,
     });
     console.log(data);
     return data;

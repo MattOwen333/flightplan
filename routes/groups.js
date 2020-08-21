@@ -11,11 +11,17 @@ groupsRouter.use((req, res, next) => {
 });
 
 groupsRouter.get("/", async (req, res) => {
-  const users = await getAllGroups();
+  const groups = await getAllGroups();
 
   res.send({
-    users,
+    groups,
   });
+});
+
+groupRouter.get("/", async (req, res, next) => {
+  const groups = await getUserGroupWithComments(req.user.id);
+
+  res.send({ groups });
 });
 
 groupsRouter.post("/", requireUser, async (req, res, next) => {

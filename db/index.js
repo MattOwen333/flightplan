@@ -1,5 +1,6 @@
 // Connect to DB
 const { Client } = require("pg");
+const groupsRouter = require("../routes/groups");
 const DB_NAME = "flightplan";
 const DB_URL = process.env.DATABASE_URL || `postgres://${DB_NAME}`;
 const client = new Client(DB_URL);
@@ -13,11 +14,11 @@ async function createUser({ username, password }) {
     } = await client.query(
       `
         INSERT INTO users(username, password) 
-        VALUES($1, $2, $3, $4) 
+        VALUES($1, $2) 
         ON CONFLICT (username) DO NOTHING 
         RETURNING *;
       `,
-      [username, password, name, location]
+      [username, password]
     );
 
     return user;
@@ -140,7 +141,7 @@ async function addComment({ userId, groupId, content }) {
     } = await client.query(
       `
         INSERT INTO comments("userId", "groupId", content )
-        VALUES($1, $2, $3, $4) 
+        VALUES($1, $2, $3) 
         RETURNING *;
 
       `,
@@ -151,6 +152,36 @@ async function addComment({ userId, groupId, content }) {
   } catch (error) {
     throw error;
   }
+}
+
+async function getUserGroupWithComments(userId) {
+  const dbResponse = await client.query(
+    `SELECT * FROM user_groups
+    WHERE "userId"=1;`,
+    [userId]
+  );
+  const userGroups = dbResponse.rows;
+
+  const groupIds = userGroups.map((userGroup) => userGroup.groupId);
+
+  const dbResponse2 = await client.query(
+    `SELECT * FROM groups
+    WHERE id IN (${groupIds.join(",")});`
+  );
+
+  const groups = dbResponse2.rows;
+
+  const dbResponse3 = await client.query(
+    `SELECT * FROM comments
+    WHERE "groupId" IN (${groupIds.join(", ")});`
+  );
+  const comments = dbResponse3.rows;
+
+  groups.forEach((group) => {
+    group.comments = comments.filter((comment) => group.id === comment.groupId);
+  });
+
+  return groups;
 }
 
 // export
@@ -166,5 +197,6 @@ module.exports = {
   deleteUser,
   getGroupById,
   addComment,
+  getUserGroupWithComments,
   // db methods
 };
