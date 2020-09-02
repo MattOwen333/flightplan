@@ -23,21 +23,6 @@ const Login = ({ toggleModal, setCurrentUser, setModalIsOpen }) => {
     localStorage.setItem("token", token);
     console.log(token);
     toggleModal(false);
-    // fitness trac.kr
-    // first route index in routes file
-    // pull user out of the token and store it in request
-    // make a route that passes in a token and verifys is valid and
-    // returns the user
-    //   let currentUser = {
-    //     username: `${username}`,
-    //     token: `${token}`,
-    //   };
-    //   // localStorage.setItem("currentUser", currentUser);
-    //   // console.log("CURRENT USER:", currentUser);
-    //   console.log(user.id);
-    //   res.send({ message: `Hello, ${username}`, token });
-    // } else {
-    //   next({
   }
   return (
     <div id="Login">

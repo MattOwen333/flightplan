@@ -1,6 +1,8 @@
 // code to build and initialize DB goes here
 const {
   client,
+  createGroup,
+  createUser,
   // other db methods
 } = require("./index");
 
@@ -34,7 +36,7 @@ async function buildTables() {
             CREATE TABLE reminder (
               id SERIAL PRIMARY KEY
               reminder varchar(255) NOT NULL
-              "userId" INTEGER REFERENCES user(id)
+              "userId" INTEGER REFERENCES users(id)
               "groupId" INTEGER REFERENCES group(id)
             );
             CREATE TABLE comments (
@@ -54,6 +56,47 @@ async function buildTables() {
 
 async function populateInitialData() {
   try {
+    await createUser({
+      username: "maximilian",
+      password: "max123",
+      name: "Max",
+      email: "max@gmail.com",
+      location: "Bronx, NY",
+    });
+    await createUser({
+      username: "therock",
+      password: "rocky",
+    });
+    await createUser({
+      username: "tomthemailman",
+      password: "tom123",
+    });
+    await createUser({
+      username: "adminuser",
+      password: "adminpassword",
+    });
+    await createUser({
+      username: "adminuser2",
+      password: "adminpassword2",
+    });
+
+    await createGroup({
+      name: "attend an opera",
+      time: "8pm",
+      location: "Sydney Australia",
+    });
+
+    await createGroup({
+      name: "attend an NFL football game",
+      time: "1pm",
+      location: "Jacksonville Florida",
+    });
+
+    await createGroup({
+      name: "attend an NFL football game",
+      time: "1pm",
+      location: "Jacksonville Florida",
+    });
     // create useful starting data
   } catch (error) {
     throw error;

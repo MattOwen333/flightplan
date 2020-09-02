@@ -42,7 +42,10 @@ const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
 const groupsRouter = require("./groups");
-apiRouter.use("/groups", groupsRouter);
+apiRouter.use("/groups", groupsRouter); // add /groups to any path from groupsRouter
+
+const groupRoutes = require("./groups");
+server.use("/groups", groupRoutes);
 
 apiRouter.use((error, req, res, next) => {
   res.send(error);

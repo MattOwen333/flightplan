@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export function storeCurrentUser(token) {
   localStorage.setItem("token", token);
 }
@@ -28,9 +29,6 @@ export async function register({ username, password }) {
     const data = await axios.post("api/users/register", {
       username,
       password,
-      name,
-      email,
-      location,
     });
     console.log(data);
     return data;

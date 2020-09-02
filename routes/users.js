@@ -1,6 +1,7 @@
 const express = require("express");
 const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
+const { requireUser } = require("./utils");
 
 usersRouter.use((req, res, next) => {
   console.log("A request is being made to /users");
@@ -84,9 +85,6 @@ usersRouter.post("/register", async (req, res, next) => {
     const user = await createUser({
       username,
       password,
-      name,
-      email,
-      location,
     });
 
     const token = jwt.sign(

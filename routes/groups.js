@@ -18,7 +18,7 @@ groupsRouter.get("/", async (req, res) => {
   });
 });
 
-groupRouter.get("/", async (req, res, next) => {
+groupsRouter.get("/", async (req, res, next) => {
   const groups = await getUserGroupWithComments(req.user.id);
 
   res.send({ groups });
