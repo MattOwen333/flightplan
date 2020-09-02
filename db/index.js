@@ -157,7 +157,7 @@ async function addComment({ userId, groupId, content }) {
 async function getUserGroupWithComments(userId) {
   const dbResponse = await client.query(
     `SELECT * FROM user_groups
-    WHERE "userId"=1;`,
+    WHERE "userId"=$1;`,
     [userId]
   );
   const userGroups = dbResponse.rows;
@@ -184,6 +184,31 @@ async function getUserGroupWithComments(userId) {
   return groups;
 }
 
+// function addUserToGroup(userId) {}
+
+function addUserToGroup(userId) {
+  const retrievedUser = await getUserById(userId)
+}
+
+// async function addUserToGroup(userId, groupId }) {
+//   try {
+//     const {
+//       rows: [user_Group],
+//     } = await client.query(
+//       `
+//     INSERT INTO user_groups ( "userId", "groupId")
+//     VALUES($1, $2)
+//     ON CONFLICT ("routineId", "activityId") DO NOTHING
+//     RETURNING *;
+//       `,
+//       [userId, groupId]
+//     );
+//     return user_Group;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+
 // export
 module.exports = {
   client,
@@ -196,6 +221,7 @@ module.exports = {
   getUserById,
   deleteUser,
   getGroupById,
+  addUserToGroup,
   addComment,
   getUserGroupWithComments,
   // db methods
