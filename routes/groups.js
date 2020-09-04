@@ -58,33 +58,14 @@ groupsRouter.post("/:id/join", requireUser, async (req, res, next) => {
   }
 });
 
+/* IF I ONLY HAVE A SINGLE INPUT AND NOT AN INPUT THAT IS AN OBJECT DO
+I HAVE TO RETURN AN OBJECT OF THE RESULT? */
+
 // groupsRouter.delete(':id', requireUser, async (req, res, next) =>
 //     const id = req.params.id;
 //     // you'd want to use deleteGroupById(id);
 //     // when a user hits /api/groups/7 with a DELETE request...
 // })
-
-routinesRouter.post(
-  "/:routineId/activities",
-  requireUser,
-  async (req, res, next) => {
-    const { activityId, count, duration } = req.body;
-    const { routineId } = req.params;
-
-    // await getRoutineById and then use next?
-
-    const routine = await addActivityToRoutine({
-      routineId,
-      activityId,
-      count,
-      duration,
-    });
-
-    res.send({
-      routine,
-    });
-  }
-);
 
 module.exports = groupsRouter; // from /index.js to /routes/index.js we get /api/groups/
 

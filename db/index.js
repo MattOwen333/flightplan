@@ -1,31 +1,66 @@
 // Connect to DB
 const { Client } = require("pg");
-const groupsRouter = require("../routes/groups");
+// const groupsRouter = require("../routes/groups");
 const DB_NAME = "flightplan";
 const DB_URL = process.env.DATABASE_URL || `postgres://${DB_NAME}`;
 const client = new Client(DB_URL);
+const jwt = require("jsonwebtoken");
 
 // database methods
 
 async function createUser({ username, password }) {
   try {
-    const {
-      rows: [user],
-    } = await client.query(
+    const { rows } = await client.query(
       `
-        INSERT INTO users(username, password) 
-        VALUES($1, $2) 
-        ON CONFLICT (username) DO NOTHING 
-        RETURNING *;
-      `,
+      INSERT INTO users(username, password)
+      VALUES($1, $2)
+      RETURNING *;
+    `,
       [username, password]
     );
 
-    return user;
+    return rows;
   } catch (error) {
     throw error;
   }
 }
+
+async function createGroup({ name, time, location }) {
+  try {
+    const { rows } = await client.query(
+      `
+      INSERT INTO group(name, time, location)
+      VALUES($1, $2, $3)
+      RETURNING *;
+    `,
+      [name, time, location]
+    );
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// async function createUser({ username, password }) {
+//   try {
+//     const {
+//       rows: [user],
+//     } = await client.query(
+//       `
+//         INSERT INTO users(username, password)
+//         VALUES($1, $2)
+//         ON CONFLICT (username) DO NOTHING
+//         RETURNING *;
+//       `,
+//       [username, password]
+//     );
+
+//     return user;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 async function getAllUsers() {
   try {
@@ -105,22 +140,6 @@ async function deleteUser(userId) {
   );
 }
 
-async function createGroup({ name, time, location }) {
-  try {
-    const rows = await client.query(
-      `
-      INSERT INTO products(name, time, location)
-      VALUES($1, $2, $3);
-    `,
-      [name, time, location]
-    );
-
-    return rows;
-  } catch (error) {
-    throw error;
-  }
-}
-
 async function getAllGroups() {
   try {
     const { rows } = await client.query(`
@@ -186,11 +205,28 @@ async function getUserGroupWithComments(userId) {
 
 // function addUserToGroup(userId) {}
 
-function addUserToGroup(userId) {
-  const retrievedUser = await getUserById(userId)
+// how to i add a user to a group with only a userId
+
+// function addUserToGroup(userId) {}
+
+// return await Promise.all();
+
+async function addUserToGroup(userId, groupId) {
+  try {
+    const { rows } = await client.query(
+      `
+    INSERT INTO user_groups()
+    WHERE user_groups."userId"=${userId} AND "groupId"=${groupId}
+    RETURNING *
+      `,
+      [userId]
+    );
+  } catch (error) {
+    throw error;
+  }
 }
 
-// async function addUserToGroup(userId, groupId }) {
+// async function addUserToGroup({ userId, groupId }) {
 //   try {
 //     const {
 //       rows: [user_Group],

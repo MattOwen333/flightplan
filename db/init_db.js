@@ -1,4 +1,5 @@
 // code to build and initialize DB goes here
+
 const {
   client,
   createGroup,
@@ -8,42 +9,39 @@ const {
 
 async function buildTables() {
   try {
+    console.log("Starting to drop tables...");
     client.connect();
 
     await client.query(
-      ` DROP TABLE IF EXISTS reminder;
-        DROP TABLE IF EXISTS groups;
+      ` DROP TABLE IF EXISTS comments;
+        DROP TABLE IF EXISTS user_groups;
+        DROP TABLE IF EXISTS group;
         DROP TABLE IF EXISTS users;
       `
     );
+
+    console.log("Starting to Build tables...");
     await client.query(`
             CREATE TABLE users (
               id SERIAL PRIMARY KEY,
               username varchar(255) UNIQUE NOT NULL,
               password varchar(255) NOT NULL
-             
             );
             CREATE TABLE group (
               id SERIAL PRIMARY KEY,
               name varchar(255) UNIQUE NOT NULL,
               time varchar(255) NOT NULL,
-              location varchar(255),
+              location varchar(255)
             );
             CREATE TABLE user_groups(
               id SERIAL PRIMARY KEY, 
               "userId" INTEGER REFERENCES users(id),
-              "groupId" INTEGER REFERENCES group(id),
-              );
-            CREATE TABLE reminder (
-              id SERIAL PRIMARY KEY
-              reminder varchar(255) NOT NULL
-              "userId" INTEGER REFERENCES users(id)
               "groupId" INTEGER REFERENCES group(id)
             );
             CREATE TABLE comments (
-              id SERIAL PRIMARY KEY
-              content varchar(255) NOT NULL
-              "userId" INTEGER REFERENCES user(id)
+              id SERIAL PRIMARY KEY,
+              content varchar(255) NOT NULL,
+              "userId" INTEGER REFERENCES user(id),
               "groupId" INTEGER REFERENCES group(id)
             );
           `);
@@ -60,9 +58,6 @@ async function populateInitialData() {
     await createUser({
       username: "maximilian",
       password: "max123",
-      name: "Max",
-      email: "max@gmail.com",
-      location: "Bronx, NY",
     });
     await createUser({
       username: "therock",

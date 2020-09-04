@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-
+import Header from "./Header";
+import Grouplist from "./Grouplist";
+import Groupview from "./Groupview";
 import {
   Link,
   BrowserRouter as Router,
@@ -26,6 +28,10 @@ const App = () => {
     <div className="App">
       <Router>
         <Header />
+        {<Grouplist />}
+        {<Groupview />}
+        {/* you'd have one component for route /groups (GroupList) */}
+        {/* you'd have a different component for /groups/:id (GroupView) */}
       </Router>
     </div>
   );

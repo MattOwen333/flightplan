@@ -31,21 +31,21 @@ export async function getAllGroups() {
 //   body: JSON.stringify({ /* whatever things you need to send to the API */ })
 // })
 
-export async function getMyGroups({ id }) {
-  userToken = localStorage.getItem("token");
-  userTokenData = json.parse(userToken);
-  userTokenId = userTokenData.id;
-  id = userTokenId;
-  try {
-    const data = await axios.post("api/groups/mine", {
-      id,
-    });
-    console.log(data);
-    return data;
-  } catch (error) {
-    throw error;
-  }
-}
+// export async function getMyGroups({ id }) {
+//   userToken = localStorage.getItem("token");
+//   userTokenData = json.parse(userToken);
+//   userTokenId = userTokenData.id;
+//   id = userTokenId;
+//   try {
+//     const data = await axios.post("api/groups/mine", {
+//       id,
+//     });
+//     console.log(data);
+//     return data;
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 // JSON.sign JSON.verify
 
@@ -55,8 +55,8 @@ export async function getMyGroups() {
   // read token from localstorage
   // and send it in the axios request...
   try {
-    const { data } = await axios.post(`/api/groups/mine`, {
-      method: "POST",
+    const { data } = await axios.get(`/api/groups/mine`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

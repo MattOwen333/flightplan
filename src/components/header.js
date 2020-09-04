@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Link,
   BrowserRouter as Router,
@@ -6,15 +6,15 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import ReactDOM from "react-dom";
-import { storeCurrentUser, clearCurrentUser } from "../Auth";
+import { getCurrentUser, storeCurrentUser, clearCurrentUser } from "../Auth";
 import Modal from "react-modal";
-import { Register, Login } from "./index";
+import { Register, Login } from ".";
 
 import "./Header.css";
 
 Modal.setAppElement("#root");
 const Header = ({ currentUser, setCurrentUser }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalRegisterIsOpen, setRegisterModalIsOpen] = useState(false);
@@ -24,33 +24,47 @@ const Header = ({ currentUser, setCurrentUser }) => {
   };
 
   const handleUserLogin = (event) => {
-    storeCurrentUser(selectedUser);
+    storeCurrentUser(selectedUser); // this deals with localstorage
     setCurrentUser(selectedUser);
-  };
 
-  // do i need to move handleUserLogin into the login component
-  // so that i can store it in localstorage
+    setIsLoggedIn(true); // this deals with Component State
+  };
 
   const handleUserLogout = (event) => {
     clearCurrentUser();
   };
 
-  // how should i change or remove some of these states
+  useEffect(() => {
+    let user = getCurrentUser();
+
+    if (user) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <div id="header">
       <header>
         <button onClick={() => setModalIsOpen(true)}>Login</button>
-        <Modal isOpen={modalIsOpen}>
-          <Login toggleModal={setModalIsOpen}></Login>
-        </Modal>
-        <button onClick={() => setRegisterModalIsOpen(true)}>Register</button>
-        <Modal isOpen={modalRegisterIsOpen}>
-          <Register toggleModal={setRegisterModalIsOpen}></Register>
-        </Modal>
-        <button onClick={handleUserLogout}>Logout {currentUser}</button>
+        {isLoggedIn ? null : (
+          <>
+            <Modal isOpen={modalIsOpen}>
+              <Login toggleModal={setModalIsOpen}></Login>
+            </Modal>
+            <button onClick={() => setRegisterModalIsOpen(true)}>
+              Register
+            </button>
+            <Modal isOpen={modalRegisterIsOpen}>
+              <Register toggleModal={setRegisterModalIsOpen}></Register>
+            </Modal>
+            <button onClick={handleUserLogout}>Logout {currentUser}</button>
+          </>
+        )}
       </header>
     </div>
   );
 };
 export default Header;
+
+// add all groups and my groups using router
+// use a ternary to show and hide buttons

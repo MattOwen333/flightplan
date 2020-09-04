@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getAllGroups, getMyGroups } from "../api";
 import { Link } from "react-router-dom";
 
-const GroupList = () => {
+const Grouplist = () => {
   const [groups, setGroups] = useState([]);
   useEffect(() => {
     getMyGroups
@@ -30,6 +30,7 @@ const GroupList = () => {
                 body: JSON.stringify(),
               });
               // api call to sign up for a group
+              // need to move the above into the api layer?
             }}
           >
             Sign Up!
@@ -40,6 +41,6 @@ const GroupList = () => {
   );
 };
 
-export default groupList;
+export default Grouplist;
 
 // will group.content pull up my comments

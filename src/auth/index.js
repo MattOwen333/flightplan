@@ -1,4 +1,5 @@
-import axios from "axios";
+const axios = require("axios");
+// import axios from "./node_modules/axios";
 
 export function storeCurrentUser(token) {
   localStorage.setItem("token", token);
