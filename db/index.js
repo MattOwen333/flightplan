@@ -219,7 +219,7 @@ async function addUserToGroup(userId, groupId) {
     WHERE user_groups."userId"=${userId} AND "groupId"=${groupId}
     RETURNING *
       `,
-      [userId]
+      [userId, groupId]
     );
   } catch (error) {
     throw error;

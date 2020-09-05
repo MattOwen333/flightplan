@@ -1,5 +1,3 @@
-// code to build and initialize DB goes here
-
 const {
   client,
   createGroup,
@@ -9,8 +7,8 @@ const {
 
 async function buildTables() {
   try {
-    console.log("Starting to drop tables...");
     client.connect();
+    console.log("Starting to drop tables...");
 
     await client.query(
       ` DROP TABLE IF EXISTS comments;
@@ -20,7 +18,6 @@ async function buildTables() {
       `
     );
 
-    console.log("Starting to Build tables...");
     await client.query(`
             CREATE TABLE users (
               id SERIAL PRIMARY KEY,
@@ -33,8 +30,8 @@ async function buildTables() {
               time varchar(255) NOT NULL,
               location varchar(255)
             );
-            CREATE TABLE user_groups(
-              id SERIAL PRIMARY KEY, 
+            CREATE TABLE user_groups (
+              id SERIAL PRIMARY KEY,
               "userId" INTEGER REFERENCES users(id),
               "groupId" INTEGER REFERENCES group(id)
             );
