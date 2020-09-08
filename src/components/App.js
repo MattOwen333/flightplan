@@ -11,6 +11,8 @@ import {
 } from "react-router-dom";
 import { getSomething } from "../api";
 
+const isLoggedIn = localStorage.getItem(token);
+
 const App = () => {
   const [message, setMessage] = useState("");
 
@@ -30,8 +32,6 @@ const App = () => {
         <Header />
         {<Grouplist />}
         {<Groupview />}
-        {/* you'd have one component for route /groups (GroupList) */}
-        {/* you'd have a different component for /groups/:id (GroupView) */}
       </Router>
     </div>
   );

@@ -8,37 +8,34 @@ const {
 async function buildTables() {
   try {
     client.connect();
-    console.log("Starting to drop tables...");
 
     await client.query(
-      ` DROP TABLE IF EXISTS comments;
-        DROP TABLE IF EXISTS user_groups;
-        DROP TABLE IF EXISTS group;
+      ` DROP TABLE IF EXISTS user_groups;
+        DROP TABLE IF EXISTS groups;
         DROP TABLE IF EXISTS users;
       `
     );
-
     await client.query(`
             CREATE TABLE users (
               id SERIAL PRIMARY KEY,
               username varchar(255) UNIQUE NOT NULL,
               password varchar(255) NOT NULL
             );
-            CREATE TABLE group (
+            CREATE TABLE groups (
               id SERIAL PRIMARY KEY,
-              name varchar(255) UNIQUE NOT NULL,
-              time varchar(255) NOT NULL,
-              location varchar(255)
+              title TEXT NOT NULL,
+              time TEXT NOT NULL,
+              location TEXT NOT NULL
             );
             CREATE TABLE user_groups (
               id SERIAL PRIMARY KEY,
               "userId" INTEGER REFERENCES users(id),
-              "groupId" INTEGER REFERENCES group(id)
+              "groupId" INTEGER REFERENCES groups(id)
             );
             CREATE TABLE comments (
-              id SERIAL PRIMARY KEY,
-              content varchar(255) NOT NULL,
-              "userId" INTEGER REFERENCES user(id),
+              id SERIAL PRIMARY KEY
+              content varchar(255) NOT NULL
+              "userId" INTEGER REFERENCES user(id)
               "groupId" INTEGER REFERENCES group(id)
             );
           `);
@@ -68,29 +65,16 @@ async function populateInitialData() {
       username: "adminuser",
       password: "adminpassword",
     });
-    await createUser({
-      username: "adminuser2",
-      password: "adminpassword2",
-    });
-
     await createGroup({
-      name: "attend an opera",
-      time: "8pm",
-      location: "Sydney Australia",
-    });
-
-    await createGroup({
-      name: "attend an NFL football game",
+      title: "attend an NFL football game",
       time: "1pm",
       location: "Jacksonville Florida",
     });
-
     await createGroup({
-      name: "attend an NFL football game",
+      title: "attend the Kentucky Derby",
       time: "1pm",
-      location: "Jacksonville Florida",
+      location: "Churchill Downs Lousiville Kentucky",
     });
-    // create useful starting data
   } catch (error) {
     throw error;
   }

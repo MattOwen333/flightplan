@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllGroups, getMyGroups } from "../api";
+import { getMyGroups, joinGroup } from "../api";
 import { Link } from "react-router-dom";
 
 const Grouplist = () => {
@@ -17,30 +17,23 @@ const Grouplist = () => {
   return (
     <div Id="group-list">
       {groups.map((group) => (
-        <div>
+        <>
           <Link to={`/groups/${group.id}`}>{group.name}</Link>
 
           {group.title}
           {group.location}
-          <h3>{group.content}</h3>
+          {group.content}
           <button
             onClick={() => {
-              fetch(`/api/groups/${group.id}/join`, {
-                method: "POST",
-                body: JSON.stringify(),
-              });
-              // api call to sign up for a group
-              // need to move the above into the api layer?
+              joinGroup;
             }}
           >
             Sign Up!
           </button>
-        </div>
+        </>
       ))}
     </div>
   );
 };
 
 export default Grouplist;
-
-// will group.content pull up my comments

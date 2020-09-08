@@ -1,10 +1,8 @@
 // Connect to DB
 const { Client } = require("pg");
-// const groupsRouter = require("../routes/groups");
-const DB_NAME = "flightplan";
+const DB_NAME = "localhost:5432/flightplan";
 const DB_URL = process.env.DATABASE_URL || `postgres://${DB_NAME}`;
 const client = new Client(DB_URL);
-const jwt = require("jsonwebtoken");
 
 // database methods
 
@@ -25,15 +23,15 @@ async function createUser({ username, password }) {
   }
 }
 
-async function createGroup({ name, time, location }) {
+async function createGroup({ title, time, location }) {
   try {
     const { rows } = await client.query(
       `
-      INSERT INTO group(name, time, location)
+      INSERT INTO groups(title, time, location)
       VALUES($1, $2, $3)
       RETURNING *;
     `,
-      [name, time, location]
+      [title, time, location]
     );
 
     return rows;
@@ -140,6 +138,15 @@ async function deleteUser(userId) {
   );
 }
 
+async function deleteGroupById(groupId) {
+  await client.query(
+    `
+      DELETE FROM group
+      WHERE id=${groupId}
+      RETURNING *`
+  );
+}
+
 async function getAllGroups() {
   try {
     const { rows } = await client.query(`
@@ -203,23 +210,29 @@ async function getUserGroupWithComments(userId) {
   return groups;
 }
 
-// function addUserToGroup(userId) {}
-
-// how to i add a user to a group with only a userId
-
-// function addUserToGroup(userId) {}
-
-// return await Promise.all();
-
 async function addUserToGroup(userId, groupId) {
   try {
     const { rows } = await client.query(
       `
-    INSERT INTO user_groups()
-    WHERE user_groups."userId"=${userId} AND "groupId"=${groupId}
+    UPDATE user_groups
+    SET ID=${userId}
+    WHERE user."userId"=${userId} AND group."groupId"=${groupId}
     RETURNING *
       `,
       [userId, groupId]
+    );
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function destroyUserGroup(id) {
+  try {
+    await client.query(
+      `
+          DELETE FROM user_groups
+          WHERE user_groups.id = ${id}
+        `
     );
   } catch (error) {
     throw error;
@@ -260,5 +273,7 @@ module.exports = {
   addUserToGroup,
   addComment,
   getUserGroupWithComments,
+  deleteGroupById,
+  destroyUserGroup,
   // db methods
 };

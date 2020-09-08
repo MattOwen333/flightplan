@@ -7,6 +7,7 @@ const {
   createGroup,
   getGroupById,
   addUserToGroup,
+  deleteGroupById,
 } = require("../db");
 
 groupsRouter.use((req, res, next) => {
@@ -58,14 +59,41 @@ groupsRouter.post("/:id/join", requireUser, async (req, res, next) => {
   }
 });
 
-/* IF I ONLY HAVE A SINGLE INPUT AND NOT AN INPUT THAT IS AN OBJECT DO
-I HAVE TO RETURN AN OBJECT OF THE RESULT? */
+groupsRouter.delete("/:id", requireUser, async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const deleteGroup = await deleteGroupById(id);
+    res.send({ deleteGroup });
+  } catch (error) {
+    next(error);
+  }
+});
 
-// groupsRouter.delete(':id', requireUser, async (req, res, next) =>
-//     const id = req.params.id;
-//     // you'd want to use deleteGroupById(id);
-//     // when a user hits /api/groups/7 with a DELETE request...
-// })
+productsRouter.delete("/:productId", async (req, res, next) => {
+  try {
+    const product = await getProductById(req.params.productId);
+
+    const deleted = await deleteProduct(product.id);
+
+    res.send({ product: deleted });
+    next();
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+productsRouter.delete("/:productId", async (req, res, next) => {
+  try {
+    const product = await getGroupById(req.params.id);
+
+    const deleted = await deleteGroup(group.id);
+
+    res.send({ group: deleted });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = groupsRouter; // from /index.js to /routes/index.js we get /api/groups/
 

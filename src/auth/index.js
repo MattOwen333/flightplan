@@ -51,11 +51,11 @@ export async function deleteUser({ username, password }) {
   }
 }
 
-// export async function getComments() {
-//   try {
-//     const { data } = await axios.get("/api/comments");
-//     return data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+export async function getComments() {
+  try {
+    const { data } = await axios.get("/api/comments");
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
