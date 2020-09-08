@@ -30,8 +30,7 @@ const App = () => {
     <div className="App">
       <Router>
         <Header />
-        {<Grouplist />}
-        {<Groupview />}
+        {isLoggedIn ? <Groupview /> : <Grouplist />}
       </Router>
     </div>
   );
