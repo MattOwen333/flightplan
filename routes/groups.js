@@ -45,14 +45,10 @@ groupsRouter.post("/", requireUser, async (req, res, next) => {
   }
 });
 
-// need a route to JOIN a group
 groupsRouter.post("/:id/join", requireUser, async (req, res, next) => {
   const creatorId = req.user.id;
   try {
     const joinGroup = await addUserToGroup(creatorId);
-    // read the user id off of req.user.id
-    // in here you will use a DB function called addUserToGroup(id)
-    // return the result of the user signing up
     res.send({ joinGroup });
   } catch (error) {
     next(error);
@@ -64,32 +60,6 @@ groupsRouter.delete("/:id", requireUser, async (req, res, next) => {
   try {
     const deleteGroup = await deleteGroupById(id);
     res.send({ deleteGroup });
-  } catch (error) {
-    next(error);
-  }
-});
-
-productsRouter.delete("/:productId", async (req, res, next) => {
-  try {
-    const product = await getProductById(req.params.productId);
-
-    const deleted = await deleteProduct(product.id);
-
-    res.send({ product: deleted });
-    next();
-  } catch ({ name, message }) {
-    next({ name, message });
-  }
-});
-
-productsRouter.delete("/:productId", async (req, res, next) => {
-  try {
-    const product = await getGroupById(req.params.id);
-
-    const deleted = await deleteGroup(group.id);
-
-    res.send({ group: deleted });
-    next();
   } catch (error) {
     next(error);
   }
