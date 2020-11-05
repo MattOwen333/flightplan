@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import { getSomething } from "../api";
 
-const isLoggedIn = localStorage.getItem(token);
+const isLoggedIn = localStorage.getItem("token");
 
 const App = () => {
   const [message, setMessage] = useState("");

@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 const Grouplist = () => {
   const [groups, setGroups] = useState([]);
   useEffect(() => {
-    getAllGroups
+    getAllGroups()
       .then((groupList) => {
-        setGroups(groupList);
+        setGroups(groupList.groups);
       })
       .catch((error) => {
         console.error(error);
@@ -25,7 +25,7 @@ const Grouplist = () => {
 
           <button
             onClick={() => {
-              joinGroup;
+              // joinGroup;
             }}
           >
             Sign Up!

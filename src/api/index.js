@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getGroupById, destroyUserGroup } from "../../db";
 
 export async function getSomething() {
   try {
@@ -20,7 +19,7 @@ export async function getAllGroups() {
   }
 }
 
-export async function getMygroups() {
+export async function getMyGroups() {
   const token = localStorage.getItem("token");
 
   return fetch(`/api/groups/mine`, {
@@ -34,7 +33,7 @@ export async function getMygroups() {
     .catch(console.error);
 }
 
-export async function joinGroup() {
+export async function joinGroup(group) {
   fetch(`/api/groups/${group.id}/join`, {
     method: "POST",
     body: JSON.stringify(),

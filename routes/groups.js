@@ -16,8 +16,9 @@ groupsRouter.use((req, res, next) => {
   next();
 });
 
-groupsRouter.get("/", async (req, res) => {
+groupsRouter.get("/", async (req, res, next) => {
   try {
+    console.log("THIS IS GROUPS CONSOLE LOG");
     const groups = await getAllGroups();
 
     res.send({

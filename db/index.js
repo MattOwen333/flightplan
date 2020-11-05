@@ -150,12 +150,13 @@ async function deleteGroupById(groupId) {
 async function getAllGroups() {
   try {
     const { rows } = await client.query(`
-      SELECT name, time, location 
-      FROM group;
+      SELECT title, time, location 
+      FROM groups;
     `);
 
     return rows;
   } catch (error) {
+    console.log("getAllGroups", error);
     throw error;
   }
 }

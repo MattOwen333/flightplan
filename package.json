@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "asyncawait": "^3.0.0",
     "axios": "^0.19.2",
     "express": "^4.17.1",

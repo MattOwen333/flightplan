@@ -7,10 +7,11 @@ const Grouplist = () => {
   useEffect(() => {
     getMyGroups
       .then((groupList) => {
-        setGroups(groupList);
+        console.log("MATT LOOK HERE", groupList);
+        setGroups(groupList.groups);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("MATT LOOK HERE ", error);
       });
   }, []);
 
@@ -25,7 +26,7 @@ const Grouplist = () => {
           {group.content}
           <button
             onClick={() => {
-              joinGroup;
+              // joinGroup;
             }}
           >
             Sign Up!
