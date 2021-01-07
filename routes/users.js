@@ -1,13 +1,9 @@
+require("dotenv").config();
+
 const express = require("express");
 const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { requireUser } = require("./utils");
-
-usersRouter.use((req, res, next) => {
-  console.log("A request is being made to /users");
-
-  next();
-});
 
 const {
   getAllUsers,
@@ -16,6 +12,12 @@ const {
   deleteUser,
   getUserById,
 } = require("../db");
+
+usersRouter.use((req, res, next) => {
+  console.log("A request is being made to /users");
+
+  next();
+});
 
 usersRouter.get("/", async (req, res) => {
   const users = await getAllUsers();
@@ -27,7 +29,7 @@ usersRouter.get("/", async (req, res) => {
 
 usersRouter.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
-
+  console.log("DEBUG: INSIDE OF LOGIN CLOSURE.");
   if (!username || !password) {
     next({
       name: "MissingCredentialsError",
@@ -36,8 +38,8 @@ usersRouter.post("/login", async (req, res, next) => {
   }
 
   try {
-    const user = await getUserByUsername(username);
-
+    const user = await getUserByUsername(username, password);
+    console.log("DEBUG: PAST GET USER BY USER NAME.");
     if (user && user.password == password) {
       const token = jwt.sign(
         {
@@ -49,6 +51,7 @@ usersRouter.post("/login", async (req, res, next) => {
           expiresIn: "1w",
         }
       );
+      console.log("DEBUG: TOKEN IS", token);
       let currentUser = {
         username: `${username}`,
         token: `${token}`,
@@ -89,7 +92,7 @@ usersRouter.post("/register", async (req, res, next) => {
 
     const token = jwt.sign(
       {
-        id: user[0].id,
+        id: user.id,
         username,
       },
       process.env.JWT_SECRET,
@@ -98,7 +101,7 @@ usersRouter.post("/register", async (req, res, next) => {
       }
     );
     res.send({
-      message: `Thanks for signing up ${username}`,
+      message: `Thanks for registering up ${username}`,
       token,
     });
   } catch ({ name, message }) {
@@ -118,4 +121,5 @@ usersRouter.delete("/:userId", async (req, res, next) => {
     next({ name, message });
   }
 });
+
 module.exports = usersRouter;

@@ -1,9 +1,4 @@
-const {
-  client,
-  createGroup,
-  createUser,
-  // other db methods
-} = require("./index");
+const { client, createGroup, createUser } = require("./index");
 
 async function buildTables() {
   try {
@@ -31,12 +26,6 @@ async function buildTables() {
               id SERIAL PRIMARY KEY,
               "userId" INTEGER REFERENCES users(id),
               "groupId" INTEGER REFERENCES groups(id)
-            );
-            CREATE TABLE comments (
-              id SERIAL PRIMARY KEY
-              content varchar(255) NOT NULL
-              "userId" INTEGER REFERENCES user(id)
-              "groupId" INTEGER REFERENCES group(id)
             );
           `);
 
@@ -73,6 +62,11 @@ async function populateInitialData() {
     await createGroup({
       title: "attend the Kentucky Derby",
       time: "1pm",
+      location: "Churchill Downs Lousiville Kentucky",
+    });
+    await createGroup({
+      title: "attend the Kentucky Derby2",
+      time: "2pm",
       location: "Churchill Downs Lousiville Kentucky",
     });
   } catch (error) {

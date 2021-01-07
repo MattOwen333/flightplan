@@ -44,7 +44,7 @@ export async function joinGroup(group) {
 
 export async function deleteUserGroup({ userId, groupId }) {
   try {
-    const data = await axios.delete("api/groups/delete", {
+    const data = await axios.delete("api/groups/mine/delete", {
       userId,
       groupId,
     });

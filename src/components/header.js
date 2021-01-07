@@ -1,19 +1,30 @@
-import React, { useState, useEffect } from "react";
-import {
-  Link,
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import { useState, useEffect } from "react";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import { getCurrentUser, storeCurrentUser, clearCurrentUser } from "../Auth";
 import Modal from "react-modal";
 import { Register, Login } from ".";
+import { Grid } from "@material-ui/core";
 
-import "./Header.css";
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
 Modal.setAppElement("#root");
 const Header = ({ currentUser, setCurrentUser }) => {
+  const classes = useStyles();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -41,30 +52,45 @@ const Header = ({ currentUser, setCurrentUser }) => {
       setIsLoggedIn(true);
     }
   }, []);
-
   return (
-    <div id="header">
-      <header>
-        <button onClick={() => setModalIsOpen(true)}>Login</button>
-        {isLoggedIn ? null : (
-          <>
-            <Modal isOpen={modalIsOpen}>
-              <Login toggleModal={setModalIsOpen}></Login>
-            </Modal>
-            <button onClick={() => setRegisterModalIsOpen(true)}>
-              Register
-            </button>
-            <Modal isOpen={modalRegisterIsOpen}>
-              <Register toggleModal={setRegisterModalIsOpen}></Register>
-            </Modal>
-            <button onClick={handleUserLogout}>Logout {currentUser}</button>
-          </>
-        )}
-      </header>
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Grid container direction="row">
+            <Grid item>
+              <Typography>Flightplan</Typography>
+            </Grid>
+            <Grid item>
+              <FlightTakeoffIcon />
+            </Grid>
+            <Grid item xs={9}></Grid>
+            <Grid item>
+              <Button color="inherit" onClick={() => setModalIsOpen(true)}>
+                Login
+              </Button>
+              <Modal isOpen={modalIsOpen}>
+                <Login toggleModal={setModalIsOpen}></Login>
+              </Modal>
+            </Grid>
+            <Grid item>
+              <Button
+                color="inherit"
+                onClick={() => setRegisterModalIsOpen(true)}
+              >
+                Register
+              </Button>
+              <Modal isOpen={modalRegisterIsOpen}>
+                <Register toggleModal={setRegisterModalIsOpen}></Register>
+              </Modal>
+            </Grid>
+            {isLoggedIn ? null : (
+              <Button onClick={handleUserLogout}>Logout {currentUser}</Button>
+            )}
+          </Grid>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 };
-export default Header;
 
-// add all groups and my groups using router
-// use a ternary to show and hide buttons
+export default Header;

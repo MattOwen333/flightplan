@@ -4,10 +4,12 @@ const axios = require("axios");
 export function storeCurrentUser(token) {
   localStorage.setItem("token", token);
 }
+
 export function getCurrentUser() {
   const user = localStorage.getItem("token");
   return user;
 }
+
 export function clearCurrentUser() {
   localStorage.removeItem("token");
 }
@@ -19,6 +21,7 @@ export async function login({ username, password }) {
       password,
     });
 
+    console.log("this is the DATA from Login", data);
     return data;
   } catch (error) {
     throw error;

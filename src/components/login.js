@@ -40,7 +40,7 @@ const Login = ({ toggleModal, setCurrentUser, setModalIsOpen }) => {
           value={password}
           onChange={handlePasswordChange}
         />
-        <button>Login</button>
+        <input type="submit" value="Login" />
       </form>
     </div>
   );

@@ -1,39 +1,57 @@
-import React, { useState, useEffect } from "react";
-import Header from "./Header";
-import Grouplist from "./Grouplist";
-import Groupview from "./Groupview";
-import {
-  Link,
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
-import { getSomething } from "../api";
+// import React, { useState, useEffect } from "react";
+// import Header from "./Header";
+// import Grouplist from "./Grouplist";
+// import Groupview from "./Groupview";
+// import { Grid } from "@material-ui/core";
 
-const isLoggedIn = localStorage.getItem("token");
+// import { getSomething } from "../api";
 
-const App = () => {
-  const [message, setMessage] = useState("");
+// const isLoggedIn = localStorage.getItem("token");
 
-  useEffect(() => {
-    getSomething()
-      .then((response) => {
-        setMessage(response.message);
-      })
-      .catch((error) => {
-        setMessage(error.message);
-      });
-  });
+// const App = () => {
+//   const [message, setMessage] = useState("");
 
-  return (
-    <div className="App">
-      <Router>
-        <Header />
-        {isLoggedIn ? <Groupview /> : <Grouplist />}
-      </Router>
-    </div>
-  );
-};
+//   useEffect(() => {
+//     getSomething()
+//       .then((response) => {
+//         setMessage(response.message);
+//       })
+//       .catch((error) => {
+//         setMessage(error.message);
+//       });
+//   });
 
-export default App;
+//   return (
+//     <div className="App">
+//       <Grid container direction="column">
+//         <Grid item>This is where the header will be</Grid>
+//         <Grid item>This is where our content goes</Grid>
+//       </Grid>
+//     </div>
+//   );
+// };
+
+// const App = () => {
+//   const [message, setMessage] = useState("");
+
+//   useEffect(() => {
+//     getSomething()
+//       .then((response) => {
+//         setMessage(response.message);
+//       })
+//       .catch((error) => {
+//         setMessage(error.message);
+//       });
+//   });
+
+//   return (
+//     <div className="App">
+//       <Router>
+//         <Header />
+//         {isLoggedIn ? <Groupview /> : <Grouplist />}
+//       </Router>
+//     </div>
+//   );
+// };
+
+// export default App;
